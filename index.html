@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Conversor de Unidades</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+           background-color: rgb(47, 119, 71);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        #caja {
+            background-color: rgba(24, 24, 24, 0.664);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+        }
+
+        input, select, button {
+            background-color: rgb(141, 194, 154);
+            margin: 10px;
+            padding: 10px;
+            border-radius: 5px;
+            border: none;
+        }
+
+        button {
+            cursor: pointer;
+            background-color: #490000;
+            color: white;
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        select {
+            width: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="caja">
+    <h2>Conversor de Unidades</h2>
+    <input type="number" id="medida" placeholder="Ingresa un valor">
+    <select id="unidad_de_origen">
+        <option value="m">Metros</option>
+        <option value="cm">Centímetros</option>
+        <option value="km">Kilómetros</option>
+        <option value="in">Pulgadas</option>
+        <option value="ft">Pies</option>
+        <option value="yd">Yardas</option>
+        <option value="mi">Millas</option>
+    </select>
+
+    <select id="unidad_de_destino">
+         <option value="m">Metros</option>
+        <option value="cm">Centímetros</option>
+        <option value="km">Kilómetros</option>
+        <option value="in">Pulgadas</option>
+        <option value="ft">Pies</option>
+        <option value="yd">Yardas</option>
+        <option value="mi">Millas</option>
+    </select>
+
+    <button onclick="calcular()">Convertir</button>
+    <p id="resultado"></p>
+</div>
+
+<script>
+    const factores = {
+        cm: 1e-2, m: 1, km: 1e3,
+        in: 0.0254, ft: 0.3048, yd: 0.9144, mi: 1609.34,
+    };
+
+    const nombres = {
+        cm: "centímetros",
+        m: "metros", km: "kilómetros", in: "pulgadas", ft: "pies",
+        yd: "yardas", mi: "millas", 
+    };
+
+    function calcular() {
+        let valor = parseFloat(document.getElementById("medida").value);
+        let origen = document.getElementById("unidad_de_origen").value;
+        let destino = document.getElementById("unidad_de_destino").value;
+
+        if (isNaN(valor) || !origen || !destino) {
+            document.getElementById("resultado").innerText = "⚠️ Completa todos los campos.";
+            return;
+        }
+
+        let resultado = (valor * factores[origen]) / factores[destino];
+
+        let resultadoFormateado = (resultado > 1e9 || resultado < 1e-6)
+            ? resultado.toExponential(4)
+            : resultado.toLocaleString('es-AR');
+
+        document.getElementById("resultado").innerText =
+            `${valor} ${nombres[origen]} = ${resultadoFormateado} ${nombres[destino]}`;
+    }
+</script>
+
+</body>
+</html>
